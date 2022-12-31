@@ -1,16 +1,49 @@
-# This is a sample Python script.
-
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+from typing import List
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+def search(nums: List[int], target: int) -> int:
+    left = 0
+    right = len(nums) - 1
+    if len(nums) == 1:
+        return 0 if nums[0] == target else -1
+    if target < nums[0] and target > nums[-1]:
+        return -1
+    while left <= right:
+        mid = (left + right) // 2
+        if nums[mid] == target:
+            return mid
+        elif left == right:
+            return -1
+        elif left + 1 == right:
+            if target == nums[left]:
+                return left
+            elif target == nums[right]:
+                return right
+            else:
+                return -1
+        elif nums[mid] > target:
+            if nums[mid] > nums[right]:
+                if target > nums[left]:
+                    right = mid - 1
+                elif target < nums[left]:
+                    left = mid + 1
+                else:
+                    return left
+            elif nums[mid] < nums[right]:
+                right = mid - 1
+
+        elif nums[mid] < target:
+
+            if nums[mid] > nums[right]:
+                left = mid + 1
+            elif nums[mid] < nums[right]:
+                if nums[right] > target:
+                    left = mid + 1
+                elif nums[right] < target:
+                    right = mid - 1
+                else:
+                    return right
+    return -1
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+print(search([4, 5, 6, 7, 0, 1, 2], 0))
